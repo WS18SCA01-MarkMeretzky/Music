@@ -33,23 +33,18 @@ class ViewController: UIViewController {
         }
         
         audioPlayer!.numberOfLoops = -1;   //infinity
-        let settings: [String: Any]! = audioPlayer!.settings;    //a dictionary
+        let settings: [String: Any] = audioPlayer!.settings;   //a dictionary
         
         for (key, value) in settings {
             switch key {
             case AVAudioFileTypeKey, AVFormatIDKey:
-                let i: Int = value as! Int;
-                var hex: String = String(i, radix: 16);          //8 hexadecimal digits
-                var stringValue: String = "";
-                while !hex.isEmpty {
-                    let firstChar: Substring = hex.prefix(2);    //2 hexadecimal digits
-                    let ascii: Int = Int(firstChar, radix: 16)!; //ASCII code
-                    stringValue += String(UnicodeScalar(ascii)!);
-                    hex = String(hex.dropFirst(2));
-                }
-                print("\(key): \(stringValue)");
+                let number: NSNumber = value as! NSNumber;
+                let unsigned: UInt32 = number.uint32Value;
+                let codeUnits: [unichar] = [24, 16, 8, 0].map {unichar(unsigned >> $0 & 0xFF)}
+                let s: String = String(utf16CodeUnits: codeUnits, count: codeUnits.count);
+                print("\(type(of: value)) \(key): \(s)");
             default:
-                print("\(key): \(value)");
+                print("\(type(of: value)) \(key): \(value)");
             }
         }
     }
