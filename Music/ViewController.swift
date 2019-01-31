@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         print("viewDidLoad");
  
-        guard let url = Bundle.main.url(forResource: filename, withExtension: filenameExtension) else {
+        guard let url: URL = Bundle.main.url(forResource: filename, withExtension: filenameExtension) else {
             return;
         }
         print("url = \(url)");
